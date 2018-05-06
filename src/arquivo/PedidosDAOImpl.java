@@ -8,18 +8,24 @@ import java.io.IOException;
 
 public class PedidosDAOImpl implements PedidosDAO {
 
+    /* Nome do arquivo onde se encontram os pedidos */
     private String nomeArquivo = "pedidos.txt";
 
+    /**
+     * Lê um arquivo contendo os pedidos e devolve um vetor de Pedidos com base em seu conteúdo
+     * @return
+     * @throws IOException
+     */
     public Pedido[] lerPedidos() throws IOException {
-        // Inicializa leitores de arquivo
+        /* Inicializa leitores de arquivo */
         FileReader arq = new FileReader(nomeArquivo);
         BufferedReader lerArq = new BufferedReader(arq);
 
-        // Lê primeira linha para obter quantidade de pedidos
+        /* Lê primeira linha para obter quantidade de pedidos */
         String linha = lerArq.readLine();
         int quantPedidos = Integer.parseInt(linha);
 
-        // Iterando pelas linhas do arquivo e adiciona pedidos no vetor
+        /* Iterando pelas linhas do arquivo e adiciona pedidos no vetor */
         Pedido[] pedidos = new Pedido[quantPedidos];
         int i = 0;
         while ((linha = lerArq.readLine()) != null) {
@@ -32,10 +38,10 @@ public class PedidosDAOImpl implements PedidosDAO {
             pedidos[i++] = p;
         }
 
-        // Fecha o manipulador de arquivos
+        /* Fecha o manipulador de arquivos */
         arq.close();
 
-        // Retorna o vetor de pedidos
+        /* Retorna o vetor de pedidos */
         return pedidos;
     }
 }
