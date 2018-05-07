@@ -1,5 +1,6 @@
 package arquivo;
 
+import excecoes.EstruturaArquivoException;
 import models.SalaCinema;
 
 import java.io.IOException;
@@ -11,6 +12,6 @@ public interface SalaCinemaDAO {
      * @return
      * @throws IOException
      */
-    public SalaCinema lerConfiguracoesDaSala() throws IOException;
+    public SalaCinema lerConfiguracoesDaSala() throws IOException, EstruturaArquivoException;
 
 }

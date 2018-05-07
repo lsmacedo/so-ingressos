@@ -1,5 +1,6 @@
 package arquivo;
 
+import excecoes.EstruturaArquivoException;
 import models.Pedido;
 
 import java.io.IOException;
@@ -11,6 +12,6 @@ public interface PedidosDAO {
      * @return
      * @throws IOException
      */
-    public Pedido[] lerPedidos() throws IOException;
+    public Pedido[] lerPedidos() throws IOException, EstruturaArquivoException;
 
 }

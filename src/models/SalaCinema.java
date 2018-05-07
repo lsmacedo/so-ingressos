@@ -1,9 +1,7 @@
 package models;
 
-import arquivo.PedidosDAO;
-import arquivo.PedidosDAOImpl;
-import arquivo.SalaCinemaDAO;
-import arquivo.SalaCinemaDAOImpl;
+import arquivo.*;
+import excecoes.EstruturaArquivoException;
 import excecoes.PoltronaOcupadaException;
 import excecoes.ReservaException;
 
@@ -26,7 +24,7 @@ public class SalaCinema {
      * Padrão Singleton. Gera um objeto do tipo SalaCinema com os dados presentes em arquivo
      * @return
      */
-    public static SalaCinema getInstance() throws IOException {
+    public static SalaCinema getInstance() throws IOException, EstruturaArquivoException {
         SalaCinemaDAO dao = new SalaCinemaDAOImpl();
         return dao.lerConfiguracoesDaSala();
     }
@@ -37,7 +35,15 @@ public class SalaCinema {
      * @throws ReservaException
      */
     public void reservar(Pedido pedido) throws ReservaException {
-        throw new PoltronaOcupadaException();
+        /* Identificar pedido */
+        int linha = pedido.getLinha(), coluna = pedido.getColuna();
+        /* Caso o assento esteja ocupado, lançar exceção */
+        if (assentos[linha][coluna] == 0)
+            throw new PoltronaOcupadaException();
+        else {
+            assentos[linha][coluna] = 0;
+            System.out.println("Assento reservado com sucesso! S2");
+        }
     }
 
     /* Getters */

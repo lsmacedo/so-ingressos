@@ -15,10 +15,10 @@ public class Main {
                 if (pedido.getTipoPedido() == Pedido.RESERVA_COMPRA)
                     sala.reservar(pedido);
             }
-        } catch ( ReservaException e ) {
+        } catch ( IOException e ) {
+            System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
             System.err.println(e.getMessage());
-        } catch ( IOException e) {
-            System.err.println("Erro inesperado ao manipular arquivos:");
+        } catch ( Exception e ) {
             System.err.println(e.getMessage());
         }
     }

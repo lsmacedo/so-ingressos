@@ -1,5 +1,6 @@
 package models;
 
+import excecoes.EstruturaArquivoException;
 import arquivo.PedidosDAO;
 import arquivo.PedidosDAOImpl;
 
@@ -32,7 +33,7 @@ public class Pedido {
     }
 
     /* Padrão Singleton. Gera vetor de pedidos com base na leitura do arquivo */
-    public static Pedido[] getInstance() throws IOException {
+    public static Pedido[] getInstance() throws IOException, EstruturaArquivoException{
         PedidosDAO dao = new PedidosDAOImpl();
         return dao.lerPedidos();
     }
