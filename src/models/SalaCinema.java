@@ -41,7 +41,7 @@ public class SalaCinema {
         if (assentos[linha][coluna] == 0)
             throw new PoltronaOcupadaException();
         else {
-            assentos[linha][coluna] = 0;
+            assentos[linha][coluna] = 2;
             System.out.println("Assento reservado com sucesso! S2");
         }
     }

@@ -3,11 +3,9 @@ import models.SalaCinema;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 
 public class Main {
-
-    public static Pedido[] pedidos;
-    public static int i = 0;
 
     public static void main(String[] args) {
 //        try {
@@ -25,19 +23,9 @@ public class Main {
 //            System.err.println(e.getMessage());
 //        }
 
-        try {
-            pedidos = Pedido.getInstance();
-
-            for (int j = 0; j < 10; j++) {
-                Cliente c = new Cliente(pedidos[i++]);
-                c.start();
-            }
-
-        } catch ( IOException e ) {
-            System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
-            System.err.println(e.getMessage());
-        } catch ( Exception e ) {
-            System.err.println(e.getMessage());
+        for (int i = 0; i < 10; i++) {
+            Cliente c = new Cliente();
+            c.start();
         }
 
 

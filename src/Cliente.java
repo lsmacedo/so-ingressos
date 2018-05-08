@@ -7,18 +7,20 @@ public class Cliente extends Thread {
 
     private Pedido pedido;
 
-    public Cliente(Pedido pedido) {
-        this.pedido = pedido;
+    public Cliente() {
     }
 
     @Override
     public void run() {
         super.run();
 
-        if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA)
-            tentarReservar();
+        while ((pedido = Fila.getNext()) != null) {
 
-        new Cliente(Main.pedidos[Main.i++]).start();
+            if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA)
+                tentarReservar();
+
+        }
+
     }
 
     public void tentarReservar(){
@@ -27,6 +29,7 @@ public class Cliente extends Thread {
             reservarAssento();
 
     }
+
 
     public synchronized void reservarAssento(){
         try {
