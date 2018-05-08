@@ -51,4 +51,9 @@ public class SalaCinema {
         return assentos[fila][cadeira];
     }
 
+    public void retirarReserva(Pedido pedido){
+        int linha = pedido.getLinha(), coluna = pedido.getColuna();
+        assentos[linha][coluna] = 1;
+    }
+
 }
