@@ -2,6 +2,7 @@ package models;
 
 import arquivo.*;
 import excecoes.EstruturaArquivoException;
+import excecoes.PoltronaInexistenteException;
 import excecoes.PoltronaOcupadaException;
 import excecoes.ReservaException;
 
@@ -39,10 +40,12 @@ public class SalaCinema {
         int linha = pedido.getLinha(), coluna = pedido.getColuna();
         /* Caso o assento esteja ocupado, lançar exceção */
         if (assentos[linha][coluna] == 0)
-            throw new PoltronaOcupadaException();
+            throw new PoltronaInexistenteException(pedido);
+        else if (assentos[linha][coluna] == 2)
+            throw new PoltronaOcupadaException(pedido);
         else {
             assentos[linha][coluna] = 2;
-            System.out.println("Assento reservado com sucesso! S2");
+            System.out.println("Assento reservado com sucesso! S2 - " + pedido);
         }
     }
 

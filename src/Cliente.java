@@ -7,9 +7,6 @@ public class Cliente extends Thread {
 
     private Pedido pedido;
 
-    public Cliente() {
-    }
-
     @Override
     public void run() {
         super.run();
@@ -23,34 +20,31 @@ public class Cliente extends Thread {
 
     }
 
-    public void tentarReservar(){
+    private void tentarReservar(){
 
         if (assentoDisponivel())
             reservarAssento();
+        else System.out.println("NEGADO FDP");
 
     }
 
-
-    public synchronized void reservarAssento(){
+    private synchronized void reservarAssento(){
         try {
 
-            SalaCinema sala = SalaCinema.getInstance();
-            sala.reservar(pedido);
+            Fila.getSala().reservar(pedido);
 
-        } catch (IOException e) {
-            System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
-            System.err.println(e.getMessage());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
-    public boolean assentoDisponivel(){
+    private boolean assentoDisponivel(){
+        boolean assentoDisponivel = false;
         try {
 
             SalaCinema sala = SalaCinema.getInstance();
             int assento = sala.getAssento(pedido.getLinha(), pedido.getColuna());
-            if (assento == 1) return true;
+            if (assento == 1) assentoDisponivel = true;
 
         } catch (IOException e) {
             System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
@@ -58,7 +52,8 @@ public class Cliente extends Thread {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        return false;
+
+        return assentoDisponivel;
     }
 
 }

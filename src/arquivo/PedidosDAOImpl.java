@@ -6,6 +6,8 @@ import models.Pedido;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class PedidosDAOImpl implements PedidosDAO {
 
@@ -17,19 +19,21 @@ public class PedidosDAOImpl implements PedidosDAO {
      * @return
      * @throws IOException
      */
-    public Pedido[] lerPedidos() throws IOException, EstruturaArquivoException {
+    public Queue<Pedido> lerPedidos() throws IOException, EstruturaArquivoException {
         try {
+
             /* Inicializa leitores de arquivo */
             FileReader arq = new FileReader(nomeArquivo);
             BufferedReader lerArq = new BufferedReader(arq);
 
             /* Lê primeira linha para obter quantidade de pedidos */
             String linha = lerArq.readLine();
-            int quantPedidos = Integer.parseInt(linha);
+            int numPedidos = Integer.parseInt(linha);
 
-            /* Iterando pelas linhas do arquivo e adiciona pedidos no vetor */
-            Pedido[] pedidos = new Pedido[quantPedidos];
-            int i = 0;
+            /* Cria estrutura de dados para armazenar os pedidos */
+            Queue<Pedido> pedidos = new LinkedList<>();
+
+            /* Iterando pelas linhas do arquivo e adiciona pedidos na fila */
             while ((linha = lerArq.readLine()) != null) {
                 String[] gambi = linha.split(" ");
                 int tp = Integer.parseInt(gambi[0]);
@@ -37,7 +41,7 @@ public class PedidosDAOImpl implements PedidosDAO {
                 int c = Integer.parseInt(gambi[2]);
                 int tc = Integer.parseInt(gambi[3]);
                 Pedido p = new Pedido(tp, l, c, tc);
-                pedidos[i++] = p;
+                pedidos.add(p);
             }
 
             /* Fecha o manipulador de arquivos */

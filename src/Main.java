@@ -23,10 +23,19 @@ public class Main {
 //            System.err.println(e.getMessage());
 //        }
 
-        for (int i = 0; i < 10; i++) {
-            Cliente c = new Cliente();
-            c.start();
+        try {
+            Fila.iniciar();
+            for (int i = 0; i < 10; i++) {
+                Cliente c = new Cliente();
+                c.start();
+            }
+        } catch ( IOException e ) {
+            System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
+            System.err.println(e.getMessage());
+        } catch ( Exception e ) {
+            System.err.println(e.getMessage());
         }
+
 
 
     }

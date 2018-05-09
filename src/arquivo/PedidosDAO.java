@@ -4,6 +4,7 @@ import excecoes.EstruturaArquivoException;
 import models.Pedido;
 
 import java.io.IOException;
+import java.util.Queue;
 
 public interface PedidosDAO {
 
@@ -12,6 +13,6 @@ public interface PedidosDAO {
      * @return
      * @throws IOException
      */
-    public Pedido[] lerPedidos() throws IOException, EstruturaArquivoException;
+    public Queue<Pedido> lerPedidos() throws IOException, EstruturaArquivoException;
 
 }

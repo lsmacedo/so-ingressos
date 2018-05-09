@@ -5,6 +5,8 @@ import arquivo.PedidosDAO;
 import arquivo.PedidosDAOImpl;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Pedido {
 
@@ -33,7 +35,7 @@ public class Pedido {
     }
 
     /* Padrão Singleton. Gera vetor de pedidos com base na leitura do arquivo */
-    public static Pedido[] getInstance() throws IOException, EstruturaArquivoException{
+    public static Queue<Pedido> getInstance() throws IOException, EstruturaArquivoException{
         PedidosDAO dao = new PedidosDAOImpl();
         return dao.lerPedidos();
     }
@@ -53,6 +55,11 @@ public class Pedido {
 
     public int getTempoParaConcluir() {
         return this.tempoParaConcluir;
+    }
+
+    @Override
+    public String toString() {
+        return "Linha: " + linha + " | Coluna: " + coluna;
     }
 
 }
