@@ -59,6 +59,15 @@ public class SalaCinema {
         }
     }
 
+    public void imprimirSala(){
+        for (int i=0; i<assentos.length; i++){
+            for (int j=0; j<assentos[i].length; j++){
+                System.out.print(assentos[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
     /* Getters */
     public int getAssento(int fila, int cadeira) {
         return assentos[fila][cadeira];

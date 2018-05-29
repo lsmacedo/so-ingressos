@@ -16,6 +16,8 @@ public class Cliente extends Thread {
 
         while ((pedido = Fila.getNext()) != null) {
 
+            boolean ehUltimoPedido = Fila.isEmpty();
+
             if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA) {
                 tentarReservar();
             }
@@ -32,7 +34,13 @@ public class Cliente extends Thread {
                 retirarReserva(conseguiuReservar);
             }
 
+            if (ehUltimoPedido){
+             Fila.getSala().imprimirSala();
+            }
+
         }
+
+
 
     }
 

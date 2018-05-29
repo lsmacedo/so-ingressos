@@ -20,6 +20,10 @@ public class Fila {
         return pedidos.poll();
     }
 
+    public static synchronized boolean isEmpty(){
+        return pedidos.isEmpty();
+    }
+
     public static synchronized SalaCinema getSala() {
         return sala;
     }
