@@ -49,12 +49,14 @@ public class SalaCinema {
         }
     }
 
-    public void retirarReserva(Pedido pedido){
+    public void retirarReserva(Pedido pedido, boolean conseguiuReservar){
         /* Identificar pedido */
         int linha = pedido.getLinha(), coluna = pedido.getColuna();
 
-        assentos[linha][coluna] = 1;
-        System.out.println("Reserva retirada com sucesso. Pense bem antes de tirar a oportunidade de alguem que poderia estar usufruindo deste ingresso :( - " + pedido);
+        if (conseguiuReservar) {
+            assentos[linha][coluna] = 1;
+            System.out.println("Reserva retirada com sucesso. Pense bem antes de tirar a oportunidade de alguem que poderia estar usufruindo deste ingresso :( - " + pedido);
+        }
     }
 
     /* Getters */

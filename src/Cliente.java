@@ -8,6 +8,7 @@ import java.io.IOException;
 public class Cliente extends Thread {
 
     private Pedido pedido;
+    boolean conseguiuReservar;
 
     @Override
     public void run() {
@@ -15,8 +16,9 @@ public class Cliente extends Thread {
 
         while ((pedido = Fila.getNext()) != null) {
 
-            if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA)
+            if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA) {
                 tentarReservar();
+            }
             if (pedido.getTipoPedido() == Pedido.CONSULTA)
                 consultar();
 
@@ -27,7 +29,7 @@ public class Cliente extends Thread {
             }
 
             if (pedido.getTipoPedido() == pedido.RESERVA_NAO_COMPRA){
-                retirarReserva();
+                retirarReserva(conseguiuReservar);
             }
 
         }
@@ -45,9 +47,14 @@ public class Cliente extends Thread {
 
     private void tentarReservar(){
 
-        if (assentoDisponivel())
+        if (assentoDisponivel()) {
             reservarAssento();
-        else System.err.println("Assento não disponível");
+            conseguiuReservar = true;
+        }
+        else {
+            conseguiuReservar = false;
+            System.err.println("Assento não disponível");
+        }
 
     }
 
@@ -61,10 +68,10 @@ public class Cliente extends Thread {
         }
     }
 
-    private synchronized void retirarReserva(){
+    private synchronized void retirarReserva(boolean tentativaReservaFalhou){
         try {
 
-            Fila.getSala().retirarReserva(pedido);
+            Fila.getSala().retirarReserva(pedido, tentativaReservaFalhou);
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
