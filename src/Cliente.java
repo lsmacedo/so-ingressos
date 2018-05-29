@@ -1,3 +1,4 @@
+import excecoes.PoltronaInexistenteException;
 import models.Pedido;
 import models.SalaCinema;
 
@@ -15,9 +16,17 @@ public class Cliente extends Thread {
 
             if (pedido.getTipoPedido() == Pedido.RESERVA_NAO_COMPRA || pedido.getTipoPedido() == Pedido.RESERVA_COMPRA)
                 tentarReservar();
+            if (pedido.getTipoPedido() == Pedido.CONSULTA)
+                consultar();
 
         }
 
+    }
+
+    private void consultar(){
+        if (assentoDisponivel())
+            System.out.println("Poltrona disponível");
+        else System.out.println("Poltrona já reservada");
     }
 
     private void tentarReservar(){
@@ -45,6 +54,10 @@ public class Cliente extends Thread {
             SalaCinema sala = SalaCinema.getInstance();
             int assento = sala.getAssento(pedido.getLinha(), pedido.getColuna());
             if (assento == 1) assentoDisponivel = true;
+            else if (assento == 0){
+                throw new PoltronaInexistenteException(pedido);
+
+            }
 
         } catch (IOException e) {
             System.err.print("Uma exceção foi encontrada ao manipular arquivo: ");
