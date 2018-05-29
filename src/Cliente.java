@@ -1,4 +1,5 @@
 import excecoes.PoltronaInexistenteException;
+import excecoes.PoltronaOcupadaException;
 import models.Pedido;
 import models.SalaCinema;
 
@@ -19,21 +20,34 @@ public class Cliente extends Thread {
             if (pedido.getTipoPedido() == Pedido.CONSULTA)
                 consultar();
 
+            try {
+                this.sleep(pedido.getTempoParaConcluir());
+            } catch (InterruptedException e){
+                System.err.println("Erro ao colocar thread para dormir: " + e.getMessage());
+            }
+
+            if (pedido.getTipoPedido() == pedido.RESERVA_NAO_COMPRA){
+                retirarReserva();
+            }
+
         }
 
     }
 
     private void consultar(){
-        if (assentoDisponivel())
-            System.out.println("Poltrona disponível");
-        else System.out.println("Poltrona já reservada");
+        try {
+            if (!assentoDisponivel())
+                throw new PoltronaOcupadaException(pedido);
+        }catch (PoltronaOcupadaException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     private void tentarReservar(){
 
         if (assentoDisponivel())
             reservarAssento();
-        else System.out.println("NEGADO FDP");
+        else System.err.println("Assento não disponível");
 
     }
 
@@ -41,6 +55,16 @@ public class Cliente extends Thread {
         try {
 
             Fila.getSala().reservar(pedido);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private synchronized void retirarReserva(){
+        try {
+
+            Fila.getSala().retirarReserva(pedido);
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -56,7 +80,6 @@ public class Cliente extends Thread {
             if (assento == 1) assentoDisponivel = true;
             else if (assento == 0){
                 throw new PoltronaInexistenteException(pedido);
-
             }
 
         } catch (IOException e) {
