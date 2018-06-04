@@ -61,11 +61,30 @@ public class SalaCinema {
 
     public void imprimirSala(){
         for (int i=0; i<assentos.length; i++){
+            System.out.print(toFixed(i, 2) + "  |");
             for (int j=0; j<assentos[i].length; j++){
-                System.out.print(assentos[i][j]);
+                System.out.print(toFixed(assentos[i][j], 2) + " ");
             }
             System.out.println();
         }
+        System.out.print("----");
+        for (int i = 0; i < assentos[0].length*3; i++) {
+            System.out.print("-");
+        }
+        System.out.println("");
+        System.out.print("     ");
+        for (int i = 0; i < assentos[0].length; i++) {
+            System.out.print(toFixed(i, 2) + " ");
+        }
+    }
+
+    public String toFixed(int num, int tam) {
+        String r = "";
+        String s = String.valueOf(num);
+        for (int i = 0; i < tam - s.length(); i++)
+            r += " ";
+        r += s;
+        return r;
     }
 
     /* Getters */

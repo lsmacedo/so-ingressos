@@ -25,6 +25,8 @@ public class Main {
 
         try {
             Fila.iniciar();
+            Fila.getSala().imprimirSala();
+            System.out.println("\n");
             for (int i = 0; i < 10; i++) {
                 Cliente c = new Cliente();
                 c.start();
@@ -35,8 +37,6 @@ public class Main {
         } catch ( Exception e ) {
             System.err.println(e.getMessage());
         }
-
-        Fila.getSala().imprimirSala();
 
     }
 

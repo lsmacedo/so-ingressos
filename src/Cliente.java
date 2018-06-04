@@ -26,21 +26,21 @@ public class Cliente extends Thread {
 
             try {
                 this.sleep(pedido.getTempoParaConcluir());
+
+                if (pedido.getTipoPedido() == pedido.RESERVA_NAO_COMPRA){
+                    retirarReserva(conseguiuReservar);
+                }
+
+                if (ehUltimoPedido) {
+                    this.sleep(1000);
+                    System.out.println("\n");
+                    Fila.getSala().imprimirSala();
+                }
             } catch (InterruptedException e){
                 System.err.println("Erro ao colocar thread para dormir: " + e.getMessage());
             }
 
-            if (pedido.getTipoPedido() == pedido.RESERVA_NAO_COMPRA){
-                retirarReserva(conseguiuReservar);
-            }
-
-            if (ehUltimoPedido){
-             Fila.getSala().imprimirSala();
-            }
-
         }
-
-
 
     }
 
