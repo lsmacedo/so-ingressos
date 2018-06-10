@@ -35,47 +35,48 @@ public class SalaCinema {
      * @param pedido
      * @throws ReservaException
      */
-    public void reservar(Pedido pedido) throws ReservaException {
+    public boolean reservar(Pedido pedido) throws ReservaException {
         /* Identificar pedido */
         int linha = pedido.getLinha(), coluna = pedido.getColuna();
         /* Caso o assento esteja ocupado, lançar exceção */
-        if (assentos[linha][coluna] == 0)
+        if (assentos[linha][coluna] == 0) {
             throw new PoltronaInexistenteException(pedido);
+        }
         else if (assentos[linha][coluna] == 2)
             throw new PoltronaOcupadaException(pedido);
         else {
             assentos[linha][coluna] = 2;
-            System.out.println("Assento reservado com sucesso! S2 - " + pedido);
+            System.out.println("\u001B[32m Assento reservado com sucesso! S2 - " + pedido + "\u001B[0m");
+            return true;
         }
     }
 
-    public void retirarReserva(Pedido pedido, boolean conseguiuReservar){
+    public boolean retirarReserva(Pedido pedido, boolean conseguiuReservar){
         /* Identificar pedido */
         int linha = pedido.getLinha(), coluna = pedido.getColuna();
 
         if (conseguiuReservar) {
             assentos[linha][coluna] = 1;
-            System.out.println("Reserva retirada com sucesso. Pense bem antes de tirar a oportunidade de alguem que poderia estar usufruindo deste ingresso :( - " + pedido);
+            System.out.println("\u001B[34m Reserva retirada com sucesso. Pense bem antes de tirar a oportunidade de alguem que poderia estar usufruindo deste ingresso :( - " + pedido + "\u001B[0m");
+            return true;
         }
+        return false;
     }
 
     public void imprimirSala(){
         for (int i=0; i<assentos.length; i++){
             System.out.print(toFixed(i, 2) + "  |");
             for (int j=0; j<assentos[i].length; j++){
-                System.out.print(toFixed(assentos[i][j], 2) + " ");
+                System.out.print(toFixed(assentos[i][j], 0));
             }
             System.out.println();
         }
         System.out.print("----");
-        for (int i = 0; i < assentos[0].length*3; i++) {
+        for (int i = 0; i < assentos[0].length+3; i++) {
             System.out.print("-");
         }
         System.out.println("");
-        System.out.print("     ");
-        for (int i = 0; i < assentos[0].length; i++) {
-            System.out.print(toFixed(i, 2) + " ");
-        }
+
     }
 
     public String toFixed(int num, int tam) {

@@ -1,17 +1,26 @@
+import arquivo.PedidosDAO;
+import arquivo.PedidosDAOImpl;
 import excecoes.PoltronaInexistenteException;
 import excecoes.PoltronaOcupadaException;
+import excecoes.ReservaException;
 import models.Pedido;
 import models.SalaCinema;
+import models.TipoPedidoLOG;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente extends Thread {
 
+    private List<Pedido> vendidos = new ArrayList<>();
+    private List<Pedido> negados = new ArrayList<>();
+
     private Pedido pedido;
-    boolean conseguiuReservar;
+    private boolean conseguiuReservar;
 
     @Override
-    public void run() {
+    public void run(){
         super.run();
 
         while ((pedido = Fila.getNext()) != null) {
@@ -35,6 +44,7 @@ public class Cliente extends Thread {
                     this.sleep(1000);
                     System.out.println("\n");
                     Fila.getSala().imprimirSala();
+                    escreverLOG();
                 }
             } catch (InterruptedException e){
                 System.err.println("Erro ao colocar thread para dormir: " + e.getMessage());
@@ -57,11 +67,6 @@ public class Cliente extends Thread {
 
         if (assentoDisponivel()) {
             reservarAssento();
-            conseguiuReservar = true;
-        }
-        else {
-            conseguiuReservar = false;
-            System.err.println("Assento não disponível");
         }
 
     }
@@ -70,20 +75,21 @@ public class Cliente extends Thread {
         try {
 
             Fila.getSala().reservar(pedido);
+            vendidos.add(pedido);
+            conseguiuReservar = true;
 
-        } catch (Exception e) {
+        } catch (ReservaException e) {
+            negados.add(pedido);
+            conseguiuReservar = false;
             System.err.println(e.getMessage());
         }
     }
 
-    private synchronized void retirarReserva(boolean tentativaReservaFalhou){
-        try {
+    private synchronized void retirarReserva(boolean conseguiuReservar){
 
-            Fila.getSala().retirarReserva(pedido, tentativaReservaFalhou);
+        if (Fila.getSala().retirarReserva(pedido, conseguiuReservar))
+            negados.add(pedido);
 
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
     }
 
     private boolean assentoDisponivel(){
@@ -106,6 +112,17 @@ public class Cliente extends Thread {
 
         return assentoDisponivel;
     }
+
+    private void escreverLOG(){
+        try {
+            PedidosDAO dao = new PedidosDAOImpl();
+            dao.escreverPedidos(vendidos, TipoPedidoLOG.PEDIDO_VENDIDO);
+            dao.escreverPedidos(negados, TipoPedidoLOG.PEDIDO_NEGADO);
+        }catch (IOException e){
+            System.out.println("Erro ao escrever o LOG");
+        }
+    }
+
 
 }
 

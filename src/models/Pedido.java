@@ -7,6 +7,7 @@ import arquivo.PedidosDAOImpl;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Pedido {
 
@@ -20,6 +21,9 @@ public class Pedido {
     /* Atributos do pedido */
     private int tipoPedido, linha, coluna, tempoParaConcluir;
 
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private int numeroPedido;
+
     /**
      * Construtor padrão
      * @param tipoPedido
@@ -32,6 +36,7 @@ public class Pedido {
         this.linha = linha;
         this.coluna = coluna;
         this.tempoParaConcluir = tempoParaConcluir;
+        numeroPedido = count.incrementAndGet();
     }
 
     /* Padrão Singleton. Gera vetor de pedidos com base na leitura do arquivo */
@@ -55,6 +60,14 @@ public class Pedido {
 
     public int getTempoParaConcluir() {
         return this.tempoParaConcluir;
+    }
+
+    public int getNumeroPedido() {
+        return numeroPedido;
+    }
+
+    public void setNumeroPedido(int numeroPedido) {
+        this.numeroPedido = numeroPedido;
     }
 
     @Override

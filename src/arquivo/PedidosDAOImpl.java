@@ -2,12 +2,13 @@ package arquivo;
 
 import excecoes.EstruturaArquivoException;
 import models.Pedido;
+import models.TipoPedidoLOG;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Timer;
 
 public class PedidosDAOImpl implements PedidosDAO {
 
@@ -53,5 +54,20 @@ public class PedidosDAOImpl implements PedidosDAO {
         catch (NullPointerException | NumberFormatException e) {
             throw new EstruturaArquivoException(nomeArquivo);
         }
+    }
+
+    @Override
+    public void escreverPedidos(List<Pedido> pedidos, TipoPedidoLOG tipoPedido) throws IOException {
+
+        FileWriter fileWriter = new FileWriter(tipoPedido.getNomeArquivo());
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        for (Pedido p : pedidos){
+            printWriter.println(tipoPedido.getNomeLOG() + ", PEDIDO " + p.getNumeroPedido() + ", POLTRONA " + p.getLinha() + " " + p.getColuna());
+        }
+
+        printWriter.close();
+        fileWriter.close();
+
     }
 }

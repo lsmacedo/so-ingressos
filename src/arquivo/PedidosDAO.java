@@ -2,8 +2,10 @@ package arquivo;
 
 import excecoes.EstruturaArquivoException;
 import models.Pedido;
+import models.TipoPedidoLOG;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Queue;
 
 public interface PedidosDAO {
@@ -13,6 +15,8 @@ public interface PedidosDAO {
      * @return
      * @throws IOException
      */
-    public Queue<Pedido> lerPedidos() throws IOException, EstruturaArquivoException;
+    Queue<Pedido> lerPedidos() throws IOException, EstruturaArquivoException;
+
+    void escreverPedidos(List<Pedido> pedidos, TipoPedidoLOG tipoPedidoLOG) throws IOException;
 
 }
